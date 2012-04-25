@@ -13,7 +13,7 @@ public class Io extends PApplet {
 		background(255);
 		fill(0);
 		stroke(255);
-		line = new IOLine();
+		line = new IOLine(200, 200, 400, 400, .01);
 		line.startAnimation();
 		System.out.println("setup");
 	}
