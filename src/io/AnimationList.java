@@ -88,6 +88,7 @@ public class AnimationList extends Animation implements AnimationInterface {
 			}
 		}
 		Animation nextAnimation = list.get(currentIndex);
+		nextAnimation.clearTasks();
 		nextAnimation.startAnimation();
 		System.out.println("queuNextAnimationwithTag: " + nextAnimation.testTag);
 	}

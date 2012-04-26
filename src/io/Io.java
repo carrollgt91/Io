@@ -1,5 +1,7 @@
 package io;
 
+import java.util.Timer;
+
 import processing.core.PApplet;
 
 @SuppressWarnings("serial")
@@ -19,18 +21,20 @@ public class Io extends PApplet {
 		fill(0);
 		stroke(255);
 		loop();
+		Timer manager = new Timer();
 		animManager = AnimationManager.getInstance();// HACKALERT: the order of
 														// these calls is
 														// important currently.
 														// might want to fix
 														// that.
 		AnimationManager.setSharedParent(this);
+		AnimationManager.setSharedmanager(manager);
 
 		
 		testAnimList = new AnimationList();
 
-		for (int i = 0; i < 10; i++) {
-			IOLine line = new IOLine((i*24345)%301, (i*24345)%238, WIDTH/2, HEIGHT/2, (float) .1, 1000);
+		for (int i = 0; i < 2; i++) {
+			IOLine line = new IOLine((i*24345)%301, (i*24345)%238, WIDTH/2, HEIGHT/2, (float) .05, 1000);
 			line.testTag=i;
 			testAnimList.add(line);
 		}

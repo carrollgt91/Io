@@ -28,8 +28,7 @@ public class Animation extends TimerTask {
     Animation() // WARNING:if you use this constructor, you must specify the parent manually after the fact until the singlton exists
     {
     	this.duration = 0;
-    	AnimationManager sMan = new AnimationManager.getInstance();
-    	this.manager = sMan.getSharedManager();
+    	this.manager = AnimationManager.getInstance().getSharedManager();
     	isAnimating = false;
     	this.parent = AnimationManager.getInstance().getSharedParent();
     	framerate = this.parent.getFramerate();
@@ -80,6 +79,11 @@ public class Animation extends TimerTask {
 		if(this.superList!=null&&(!this.superList.isSimultaneous))
 			this.superList.queueNextAnimation();
 		
+	}
+	
+	public void clearTasks()
+	{
+		this.startDrawTask.cancel();
 	}
     
  
