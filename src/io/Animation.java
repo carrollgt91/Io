@@ -9,7 +9,6 @@ public class Animation extends TimerTask {
     // of timers on a case by case basis. Version .... later idea
     
     AnimationList superList;
-    AnimationList subList;
     
     long duration;
     
@@ -24,15 +23,18 @@ public class Animation extends TimerTask {
     private long framerate;
     
     private StopAnimationTask stopTask;
+    private StartDrawTask startDrawTask;
     
     Animation() // WARNING:if you use this constructor, you must specify the parent manually after the fact until the singlton exists
     {
     	this.duration = 0;
-    	this.manager = new Timer();
+    	AnimationManager sMan = new AnimationManager.getInstance();
+    	this.manager = sMan.getSharedManager();
     	isAnimating = false;
     	this.parent = AnimationManager.getInstance().getSharedParent();
     	framerate = this.parent.getFramerate();
     	this.stopTask = new StopAnimationTask(this);
+    	this.startDrawTask = new StartDrawTask(this);
     }
     
     
@@ -44,6 +46,7 @@ public class Animation extends TimerTask {
     	this.parent = AnimationManager.getInstance().getSharedParent();
     	framerate = this.parent.getFramerate();
     	this.stopTask = new StopAnimationTask(this);
+    	this.startDrawTask = new StartDrawTask(this);
     }
 
     void startAnimation()
@@ -58,7 +61,7 @@ public class Animation extends TimerTask {
 	}
 	
 	public void drawMethod() {
-		//System.out.println("drawMethod in Animation");
+		System.out.println("drawMethod in Animation");
 	}
 
 	@Override
@@ -72,6 +75,10 @@ public class Animation extends TimerTask {
 		this.isAnimating = false;
 		this.isDrawing = true;
 		this.cancel();
+		this.manager.schedule(this.startDrawTask, 0, framerate);
+		
+		if(this.superList!=null&&(!this.superList.isSimultaneous))
+			this.superList.queueNextAnimation();
 		
 	}
     
