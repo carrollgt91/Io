@@ -2,8 +2,6 @@ package io;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import processing.core.PApplet;
-
 
 public class Animation extends TimerTask {
     Timer manager;//What to name? Exactly how do we want to integrate this in the class hierarchy? Should we have each AnimationList
@@ -31,23 +29,19 @@ public class Animation extends TimerTask {
     {
     	this.duration = 0;
     	this.manager = new Timer();
-    	superList = new AnimationList();
-    	subList = new AnimationList();
     	isAnimating = false;
-    	//this.parent = defaultParent; implement singleton functionality on the sketch so you can just grab it anywhere, much simpler
-    	//framerate = this.parent.getFramerate();
+    	this.parent = AnimationManager.getInstance().getSharedParent();
+    	framerate = this.parent.getFramerate();
     	this.stopTask = new StopAnimationTask(this);
     }
     
     
-    Animation(long duration, Io parent)
+    Animation(long duration)
     {
     	this.duration = duration;
     	this.manager = new Timer();
-    	//superList = new AnimationList();
-    	//subList = new AnimationList();
     	isAnimating = false;
-    	this.parent = parent;
+    	this.parent = AnimationManager.getInstance().getSharedParent();
     	framerate = this.parent.getFramerate();
     	this.stopTask = new StopAnimationTask(this);
     }

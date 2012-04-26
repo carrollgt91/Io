@@ -3,29 +3,31 @@ package io;
 import java.util.ArrayList;
 
 public class AnimationList extends Animation implements AnimationInterface {
-	
+
 	ArrayList<Animation>list;
+	int currentIndex;
+	boolean isLooping;
 	AnimationList()
 	{
 		super();
 		list = new ArrayList<Animation>();
 	}
 
-	AnimationList(long duration, Io parent) {
-		super(duration, parent);
+	AnimationList(long duration) {
+		super(duration);
 		list = new ArrayList<Animation>();
-		
+
 	}
 
-    void startAnimation()
-    {
-    	super.startAnimation();
-    }
+	void startAnimation()
+	{
+		super.startAnimation();
+	}
 
 	public void animationMethod() {
-	System.out.println("animationMethod in Animation");		
+		System.out.println("animationMethod in AnimationList current index:" + currentIndex);		
 	}
-	
+
 	public void drawMethod() {
 		System.out.println("drawMethod in Animation");
 	}
@@ -33,15 +35,40 @@ public class AnimationList extends Animation implements AnimationInterface {
 	@Override
 	public void run() {
 		this.animationMethod();
-		System.out.println("running");
-		
 	}
 
 	public void stopAnimation() {
-		this.isAnimating = false;
-		this.isDrawing = true;
-		this.cancel();
-		
+		super.stopAnimation();
 	}
-    
+
+
+	void add(Animation animation)
+	{
+		
+		animation.superList = this;
+		list.add(animation);
+
+	}
+
+	public void queueNextAnimation()
+	{
+		if(currentIndex < list.size()-1)
+		{
+			currentIndex = currentIndex + 1;
+		}
+		else if(isLooping)
+		{
+			currentIndex = 0;
+		}
+		else
+		{
+			if(this.superList !=null)
+			{
+				this.superList.queueNextAnimation();
+			}
+		}
+		Animation nextAnimation = list.get(currentIndex);
+		nextAnimation.startAnimation();
+	}
 }
+

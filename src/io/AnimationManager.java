@@ -16,6 +16,10 @@ public class AnimationManager {
 	      }
 	      return instance;
 	   }
+	   public Io getSharedParent()
+	   {
+		   return sharedParent;
+	   }
 }
 
 
